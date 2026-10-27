@@ -1,0 +1,71 @@
+// Write your overrides
+
+// Dialogs: the title and the action bar stay in place, only the body scrolls.
+// Vuetify's `scrollable` expects the card's direct children to be the scroll
+// container; our forms sit between the card and its content, so the flex
+// column is carried down to them. The scrolling part carries `dialog-body`.
+.v-dialog--scrollable > .v-overlay__content > .v-card {
+  > form {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-block-size: 0;
+  }
+
+  > .v-card-text,
+  > form > .v-card-text {
+    flex: 0 0 auto;
+  }
+
+  > .dialog-body,
+  > form > .dialog-body {
+    flex: 1 1 auto;
+    min-block-size: 0;
+    overflow-y: auto;
+  }
+}
+
+// The theme fades the menu items under its header while scrolling: removed,
+// the menu is short enough to need no hint.
+.layout-vertical-nav .vertical-nav-items-shadow {
+  display: none;
+}
+
+// Menu lateral plus compact que la taille par defaut du theme.
+.layout-vertical-nav {
+  .app-logo .app-logo-title {
+    font-size: 1rem;
+  }
+
+  .app-logo svg {
+    block-size: 28px;
+    inline-size: 28px;
+  }
+
+  .nav-link > :first-child,
+  .nav-group > :first-child {
+    padding-block: 0.4375rem;
+  }
+
+  .nav-item-title {
+    font-size: 0.875rem;
+  }
+
+  .nav-item-icon {
+    block-size: 1.25rem;
+    font-size: 1.25rem;
+    inline-size: 1.25rem;
+  }
+
+  .nav-section-title {
+    font-size: 0.6875rem;
+    margin-block-start: 1rem;
+  }
+}
+
+// Scrolling past the top or the bottom of a page must not pull the whole
+// window and uncover the empty band behind it (macOS « rubber band »).
+html,
+body {
+  overscroll-behavior: none;
+}

@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "supplies-389809"
+  },
+  "targets": {
+    "supplies-389809": {
+      "hosting": {
+        "daspace-admin": [
+          "daspace-admin"
+        ]
+      }
+    }
+  }
+}

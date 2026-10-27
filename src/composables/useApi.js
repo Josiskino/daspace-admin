@@ -1,0 +1,49 @@
+import { createFetch } from '@vueuse/core'
+import { destr } from 'destr'
+
+export const useApi = createFetch({
+  baseUrl: import.meta.env.VITE_API_BASE_URL || '/api',
+  fetchOptions: {
+    headers: {
+      Accept: 'application/json',
+      'ngrok-skip-browser-warning': 'true',
+    },
+  },
+  options: {
+    refetch: true,
+    async beforeFetch({ options }) {
+      const accessToken = useCookie('accessToken').value
+      if (accessToken) {
+        options.headers = {
+          ...options.headers,
+          Authorization: `Bearer ${accessToken}`,
+        }
+      }
+      
+      return { options }
+    },
+    afterFetch(ctx) {
+      const { data, response } = ctx
+
+      // Parse data if it's JSON
+      let parsedData = null
+      try {
+        parsedData = destr(data)
+      }
+      catch (error) {
+        console.error(error)
+      }
+      
+      return { data: parsedData, response }
+    },
+
+    // With `refetch`, changing a filter aborts the request in flight. The
+    // aborted request settles after its replacement has started and would
+    // leave an error behind although the new request succeeds.
+    onFetchError(ctx) {
+      if (ctx.error?.name === 'AbortError') return { ...ctx, error: null }
+
+      return ctx
+    },
+  },
+})

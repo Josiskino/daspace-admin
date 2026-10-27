@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DASpace — Administration</title>
+
+  <!-- Ouvre la connexion vers l'API pendant le chargement du JavaScript. -->
+  <link rel="preconnect" href="%VITE_API_ORIGIN%" crossorigin />
+
+  <!--
+    La police passait par webfontloader, donc par une chaîne de quatre requêtes
+    en série : bundle → loader → feuille Google → fichier woff2. Déclarée ici,
+    elle démarre en parallèle du JavaScript.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+  />
+
+  <link rel="stylesheet" type="text/css" href="/loader.css" />
+</head>
+
+<body>
+  <div id="app">
+    <div id="loading-bg">
+      <div class="loading-logo">
+        <img src="/favicon.svg" alt="DASpace" width="96" height="96" />
+      </div>
+      <div class=" loading">
+        <div class="effect-1 effects"></div>
+        <div class="effect-2 effects"></div>
+        <div class="effect-3 effects"></div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+  <script>
+    const loaderColor = localStorage.getItem('vuexy-initial-loader-bg') || '#FFFFFF'
+    const primaryColor = localStorage.getItem('vuexy-initial-loader-color') || '#17307D'
+
+    if (loaderColor)
+      document.documentElement.style.setProperty('--initial-loader-bg', loaderColor)
+
+    if (primaryColor)
+      document.documentElement.style.setProperty('--initial-loader-color', primaryColor)
+    </script>
+  </body>
+</html>
