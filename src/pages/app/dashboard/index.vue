@@ -53,7 +53,31 @@ const platformItems = computed(() => [
   { title: 'Revenus', value: formatMoney(stats.value?.total_revenue), icon: 'tabler-cash', color: 'primary' },
 ])
 
-const maxCategoryCount = computed(() => Math.max(1, ...(stats.value?.categories ?? []).map(c => c.properties_count)))
+// Icones des categories : l'API stocke les noms du site public (Lucide), traduits
+// ici vers le jeu d'icones de l'admin.
+const CATEGORY_ICONS = {
+  'building-2': 'tabler-building',
+  'home': 'tabler-home',
+  'castle': 'tabler-building-castle',
+  'door-open': 'tabler-door',
+  'briefcase': 'tabler-briefcase',
+  'map': 'tabler-map',
+  'bed-single': 'tabler-bed',
+  'store': 'tabler-building-store',
+}
+
+const categoryStats = computed(() => {
+  const categories = stats.value?.categories ?? []
+  const total = categories.reduce((sum, c) => sum + c.properties_count, 0)
+
+  return [...categories]
+    .sort((a, b) => b.properties_count - a.properties_count || a.name.localeCompare(b.name))
+    .map(c => ({
+      ...c,
+      icon: CATEGORY_ICONS[c.icon] ?? 'tabler-category',
+      share: total ? Math.round((c.properties_count / total) * 100) : 0,
+    }))
+})
 </script>
 
 <template>
@@ -165,28 +189,80 @@ const maxCategoryCount = computed(() => Math.max(1, ...(stats.value?.categories 
     </VRow>
 
     <!-- 👉 Annonces par categorie -->
-    <VCard title="Annonces par catégorie">
-      <VCardText v-if="!stats?.categories?.length">
+    <VCard>
+      <VCardItem>
+        <VCardTitle>Annonces par catégorie</VCardTitle>
+        <VCardSubtitle>Répartition de toutes les annonces, quel que soit leur statut</VCardSubtitle>
+        <template #append>
+          <VBtn
+            variant="text"
+            size="small"
+            append-icon="tabler-chevron-right"
+            :to="{ name: 'categories' }"
+          >
+            Gérer
+          </VBtn>
+        </template>
+      </VCardItem>
+
+      <VCardText v-if="!categoryStats.length">
         <span class="text-medium-emphasis">Aucune catégorie pour le moment.</span>
       </VCardText>
+
       <VCardText v-else>
-        <div
-          v-for="category in stats.categories"
-          :key="category.id"
-          class="mb-4"
-        >
-          <div class="d-flex justify-space-between mb-1">
-            <span class="text-body-1">{{ category.name }}</span>
-            <span class="text-body-1 font-weight-medium">{{ category.properties_count }}</span>
+        <div class="category-grid">
+          <div
+            v-for="category in categoryStats"
+            :key="category.id"
+            class="category-tile"
+            :class="{ 'is-empty': !category.properties_count }"
+          >
+            <div class="d-flex align-center gap-3 mb-3">
+              <VAvatar
+                size="36"
+                rounded
+                color="primary"
+                variant="tonal"
+              >
+                <VIcon
+                  :icon="category.icon"
+                  size="20"
+                />
+              </VAvatar>
+              <span class="text-body-1 font-weight-medium text-high-emphasis text-truncate">{{ category.name }}</span>
+            </div>
+            <div class="d-flex align-baseline justify-space-between mb-2">
+              <span class="text-h4">{{ category.properties_count }}</span>
+              <span class="text-body-2 text-medium-emphasis">{{ category.share }} %</span>
+            </div>
+            <VProgressLinear
+              :model-value="category.share"
+              color="primary"
+              bg-color="secondary"
+              rounded
+              height="4"
+            />
           </div>
-          <VProgressLinear
-            :model-value="(category.properties_count / maxCategoryCount) * 100"
-            color="primary"
-            rounded
-            height="8"
-          />
         </div>
       </VCardText>
     </VCard>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.category-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+}
+
+.category-tile {
+  border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+  border-radius: 8px;
+  padding: 1rem;
+
+  &.is-empty {
+    opacity: 0.55;
+  }
+}
+</style>
