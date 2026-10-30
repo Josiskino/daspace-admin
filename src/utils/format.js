@@ -28,6 +28,9 @@ export const STATUS = {
     en_attente: { label: 'En attente', color: 'warning' },
     validee: { label: 'Validée', color: 'success' },
     refusee: { label: 'Refusée', color: 'error' },
+    suspendue: { label: 'Suspendue', color: 'secondary' },
+    vendue: { label: 'Vendue', color: 'info' },
+    louee: { label: 'Louée', color: 'info' },
   },
   user: {
     actif: { label: 'Actif', color: 'success' },
@@ -51,7 +54,7 @@ export const STATUS = {
 
 export const ROLES = {
   admin: { label: 'Administrateur', color: 'primary' },
-  proprietaire: { label: 'Annonceur', color: 'info' },
+  proprietaire: { label: 'Gestionnaire', color: 'info' },
   client: { label: 'Client', color: 'secondary' },
 }
 
