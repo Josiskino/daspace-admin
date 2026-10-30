@@ -105,6 +105,11 @@ const isDrawerOpen = computed({
 
 const photos = computed(() => (selected.value?.media ?? []).filter(m => m.type === 'photo'))
 
+// Photo affichee en grand dans le tiroir ; revient a la premiere a chaque annonce.
+const activePhoto = ref(0)
+
+watch(selected, () => { activePhoto.value = 0 })
+
 const features = computed(() => {
   const p = selected.value
   if (!p) return []
@@ -366,20 +371,38 @@ const confirmDecision = async () => {
         />
         <VDivider />
 
-        <VCarousel
+        <div
           v-if="photos.length"
-          height="240"
-          hide-delimiter-background
-          :show-arrows="photos.length > 1 ? 'hover' : false"
-          :hide-delimiters="photos.length < 2"
+          class="px-6 pt-6"
         >
-          <VCarouselItem
-            v-for="photo in photos"
-            :key="photo.id"
-            :src="toMediaUrl(photo.url)"
+          <VImg
+            :src="toMediaUrl(photos[activePhoto]?.url)"
+            :aspect-ratio="4 / 3"
             cover
+            rounded="lg"
+            class="bg-surface-variant"
           />
-        </VCarousel>
+          <div
+            v-if="photos.length > 1"
+            class="photo-thumbs mt-2"
+          >
+            <button
+              v-for="(photo, index) in photos"
+              :key="photo.id"
+              type="button"
+              class="photo-thumb"
+              :class="{ 'is-active': index === activePhoto }"
+              :aria-label="`Photo ${index + 1}`"
+              @click="activePhoto = index"
+            >
+              <VImg
+                :src="toMediaUrl(photo.url)"
+                :aspect-ratio="1"
+                cover
+              />
+            </button>
+          </div>
+        </div>
 
         <VCardText>
           <div class="d-flex align-center justify-space-between gap-2 mb-1">
@@ -507,8 +530,28 @@ const confirmDecision = async () => {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .description {
   white-space: pre-line;
+}
+
+.photo-thumbs {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.photo-thumb {
+  overflow: hidden;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0.7;
+
+  &.is-active {
+    border-color: rgb(var(--v-theme-primary));
+    opacity: 1;
+  }
 }
 </style>
