@@ -21,6 +21,7 @@ declare module 'vue-router/auto-routes' {
     'advertiser-requests': RouteRecordInfo<'advertiser-requests', '/advertiser-requests', Record<never, never>, Record<never, never>>,
     'categories': RouteRecordInfo<'categories', '/categories', Record<never, never>, Record<never, never>>,
     'contact-requests': RouteRecordInfo<'contact-requests', '/contact-requests', Record<never, never>, Record<never, never>>,
+    'content': RouteRecordInfo<'content', '/content', Record<never, never>, Record<never, never>>,
     'dashboard': RouteRecordInfo<'dashboard', '/dashboard', Record<never, never>, Record<never, never>>,
     'history': RouteRecordInfo<'history', '/history', Record<never, never>, Record<never, never>>,
     'login': RouteRecordInfo<'login', '/login', Record<never, never>, Record<never, never>>,
@@ -28,6 +29,7 @@ declare module 'vue-router/auto-routes' {
     'payments': RouteRecordInfo<'payments', '/payments', Record<never, never>, Record<never, never>>,
     'properties': RouteRecordInfo<'properties', '/properties', Record<never, never>, Record<never, never>>,
     'reports': RouteRecordInfo<'reports', '/reports', Record<never, never>, Record<never, never>>,
+    'site-settings': RouteRecordInfo<'site-settings', '/site-settings', Record<never, never>, Record<never, never>>,
     'users': RouteRecordInfo<'users', '/users', Record<never, never>, Record<never, never>>,
   }
 }

@@ -451,6 +451,8 @@
     "statusOf": true,
     "statusOptions": true,
     "storeSession": true,
-    "usePagedList": true
+    "usePagedList": true,
+    "contentPayload": true,
+    "createContentForm": true
   }
 }

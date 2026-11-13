@@ -33,6 +33,16 @@ export default [
     icon: { icon: 'tabler-category' },
     to: 'categories',
   },
+  {
+    title: 'Contenus du site',
+    icon: { icon: 'tabler-file-text' },
+    to: 'content',
+  },
+  {
+    title: 'Paramètres du site',
+    icon: { icon: 'tabler-settings' },
+    to: 'site-settings',
+  },
   { heading: 'Supervision' },
   {
     title: 'Signalements',
