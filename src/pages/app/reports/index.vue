@@ -39,7 +39,7 @@ const filtered = computed(() => {
     if (to.value && day > to.value) return false
     if (!term) return true
 
-    return [r.reason, r.details, r.property?.title, r.property?.owner?.name, r.client?.name, r.client?.email]
+    return [r.reason_label, r.reason, r.details, r.property?.title, r.property?.owner?.name, r.client?.name, r.client?.email]
       .some(value => value?.toLowerCase().includes(term))
   })
 })
@@ -143,7 +143,7 @@ const setStatus = async (report, status) => {
         </template>
 
         <template #item.reason="{ item }">
-          {{ item.reason }}
+          {{ item.reason_label ?? item.reason }}
         </template>
 
         <template #item.client="{ item }">
@@ -207,7 +207,7 @@ const setStatus = async (report, status) => {
             Motif
           </h6>
           <p class="text-body-1 mb-4">
-            {{ selected.reason }}
+            {{ selected.reason_label ?? selected.reason }}
           </p>
 
           <h6 class="text-h6 mb-1">
